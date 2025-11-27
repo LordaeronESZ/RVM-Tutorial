@@ -7,8 +7,9 @@ authors = ["Yuekai Jia <equation618@gmail.com>"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
-default = ["vmx"]
+default = ["svm"]
 vmx = []
+svm = []
 
 [dependencies]
 log = "0.4"

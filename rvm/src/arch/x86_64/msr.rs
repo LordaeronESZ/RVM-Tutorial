@@ -5,6 +5,7 @@ use x86::msr::{rdmsr, wrmsr};
 #[derive(Debug, Copy, Clone)]
 #[allow(non_camel_case_types)]
 pub enum Msr {
+    /* Intel */
     IA32_FEATURE_CONTROL = 0x3a,
     IA32_VMX_BASIC = 0x480,
 
@@ -12,6 +13,9 @@ pub enum Msr {
     IA32_VMX_CR0_FIXED1 = 0x487,
     IA32_VMX_CR4_FIXED0 = 0x488,
     IA32_VMX_CR4_FIXED1 = 0x489,
+
+    /* AMD */
+    VM_CR = 0xc0010114,
 }
 
 impl Msr {

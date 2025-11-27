@@ -4,6 +4,9 @@ cfg_if::cfg_if! {
     if #[cfg(feature = "vmx")] {
         mod vmx;
         use vmx as vender;
+    } else if #[cfg(feature = "svm")] {
+        mod svm;
+        use svm as vender;
     }
 }
 
