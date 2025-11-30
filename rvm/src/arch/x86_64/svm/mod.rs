@@ -1,15 +1,19 @@
 mod structs;
+mod vcpu;
+mod vmcb;
+mod svm;
 
 use raw_cpuid::CpuId;
-use x86::vmx::VmFail;
 use x86_64::registers::control::{Efer, EferFlags};
 
 use self::structs::SvmRegion;
-use crate::arch::x86_64::svm::structs::{FeatureControl, FeatureControlFlags};
+use self::structs::{FeatureControl, FeatureControlFlags};
 use crate::error::RvmResult;
 use crate::hal::RvmHal;
 
+pub use self::vcpu::SvmVcpu as RvmVcpu;
 pub use self::SvmPerCpuState as ArchPerCpuState;
+pub use self::svm::*;
 
 pub fn has_hardware_support() -> bool {
     if let Some(feature) = CpuId::new().get_svm_info() {
@@ -44,7 +48,7 @@ impl<H: RvmHal> SvmPerCpuState<H> {
 
         let vm_cr = FeatureControl::read();
         let disabled = vm_cr.contains(FeatureControlFlags::SVMDIS);
-        if (disabled) {
+        if disabled {
             if let Some(feature) = CpuId::new().get_svm_info() {
                 if !feature.has_svm_lock() {
                     return rvm_err!(Unsupported, "SVM disabled by BIOS and not unlockable");
